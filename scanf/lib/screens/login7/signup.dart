@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
-import 'package:restart_app/restart_app.dart';
 import '../loading.dart';
 import 'login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scanf/services/auth.dart';
-import 'package:scanf/main.dart';
 
 class MyRegister extends StatefulWidget {
   const MyRegister({Key? key}) : super(key: key);
@@ -15,7 +13,6 @@ class MyRegister extends StatefulWidget {
 }
 
 class _MyRegisterState extends State<MyRegister> {
-  final _auth = FirebaseAuth.instance;
   late String name;
   late String email;
   late String password;
@@ -147,7 +144,7 @@ class _MyRegisterState extends State<MyRegister> {
                               ),
                               CircleAvatar(
                                 radius: 30,
-                                backgroundColor: Color(0xff4c505b),
+                                backgroundColor: const Color(0xff4c505b),
                                 child: IconButton(
                                     color: Colors.white,
                                     onPressed: () async {
@@ -166,7 +163,7 @@ class _MyRegisterState extends State<MyRegister> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    LoadingPage()),
+                                                    const LoadingPage()),
                                           );
                                         }
                                       });
@@ -197,6 +194,7 @@ class _MyRegisterState extends State<MyRegister> {
                                             )),
                                   );
                                 },
+                                style: const ButtonStyle(),
                                 child: const Text(
                                   'Sign In',
                                   textAlign: TextAlign.left,
@@ -205,7 +203,6 @@ class _MyRegisterState extends State<MyRegister> {
                                       color: Colors.white,
                                       fontSize: 18),
                                 ),
-                                style: const ButtonStyle(),
                               ),
                             ],
                           )

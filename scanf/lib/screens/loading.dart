@@ -4,6 +4,8 @@ import '../services/networking.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingPage extends StatefulWidget {
+  const LoadingPage({Key? key}) : super(key: key);
+
   @override
   State<LoadingPage> createState() => _LoadingPageState();
 }

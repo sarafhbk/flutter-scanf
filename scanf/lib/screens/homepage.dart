@@ -21,8 +21,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> fetchInitialData() async {
     date = DateFormat('EEE, d-M-y').format(DateTime.now());
-    var firebaseUser = await FirebaseAuth.instance.currentUser();
-    dataBase = DataBase(collection: date, userId: firebaseUser.uid);
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    dataBase = DataBase(collection: date, userId: firebaseUser!.uid);
     bool doesExist = await dataBase.exists();
     if (doesExist) {
       print("Exists\n\n");
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(50),
+                    padding: const EdgeInsets.all(50),
                     child: Column(
                       children: [
                         Text(

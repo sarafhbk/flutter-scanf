@@ -6,20 +6,20 @@ class DataBase {
   DataBase({required this.collection, required this.userId});
 
   Future<void> setData() async {
-    final firestore = Firestore.instance;
-    await firestore.collection(collection).document(userId).setData(
+    final firestore = FirebaseFirestore.instance;
+    await firestore.collection(collection).doc(userId).set(
         {"in": FieldValue.arrayUnion([]), "out": FieldValue.arrayUnion([])});
   }
 
   Future<void> writeCheckIn({var timestamp}) async {
-    final firestore = Firestore.instance;
+    final firestore = FirebaseFirestore.instance;
     var shouldCheckin = await _shouldCheckIn();
     if (shouldCheckin) {
-      firestore.collection(collection).document(userId).updateData({
+      firestore.collection(collection).doc(userId).update({
         "in": FieldValue.arrayUnion([timestamp])
       }).then((value) => print("Success\n"));
     } else {
-      firestore.collection(collection).document(userId).updateData({
+      firestore.collection(collection).doc(userId).update({
         "in": FieldValue.arrayUnion([timestamp]),
         "out": FieldValue.arrayUnion(["NA"])
       }).then((value) => print("Success\n"));
@@ -27,14 +27,14 @@ class DataBase {
   }
 
   Future<void> writeCheckOut({var timestamp}) async {
-    final firestore = Firestore.instance;
+    final firestore = FirebaseFirestore.instance;
     var shouldCheckout = await _shouldCheckOut();
     if (shouldCheckout) {
-      firestore.collection(collection).document(userId).updateData({
+      firestore.collection(collection).doc(userId).update({
         "out": FieldValue.arrayUnion([timestamp])
       }).then((value) => print("Success\n"));
     } else {
-      firestore.collection(collection).document(userId).updateData({
+      firestore.collection(collection).doc(userId).update({
         "out": FieldValue.arrayUnion([timestamp]),
         "in": FieldValue.arrayUnion(["NA"])
       }).then((value) => print("Success\n"));
@@ -42,13 +42,12 @@ class DataBase {
   }
 
   Future<bool> _shouldCheckIn() async {
-    final firestore = Firestore.instance;
+    final firestore = FirebaseFirestore.instance;
 
-    var docSnapShot =
-        await firestore.collection(collection).document(userId).get();
-    var response = docSnapShot.data;
+    var docSnapShot = await firestore.collection(collection).doc(userId).get();
+    var response = docSnapShot.data();
 
-    if (response["in"].length == response["out"].length) {
+    if (response!["in"].length == response["out"].length) {
       return true;
     } else {
       return false;
@@ -56,13 +55,12 @@ class DataBase {
   }
 
   Future<bool> _shouldCheckOut() async {
-    final firestore = Firestore.instance;
+    final firestore = FirebaseFirestore.instance;
 
-    var docSnapShot =
-        await firestore.collection(collection).document(userId).get();
-    var response = docSnapShot.data;
+    var docSnapShot = await firestore.collection(collection).doc(userId).get();
+    var response = docSnapShot.data();
 
-    if (response["in"].length > response["out"].length) {
+    if (response!["in"].length > response["out"].length) {
       return true;
     } else {
       return false;
@@ -72,9 +70,9 @@ class DataBase {
   Future<bool> exists() async {
     bool exist = false;
     try {
-      await Firestore.instance
+      await FirebaseFirestore.instance
           .collection(collection)
-          .document(userId)
+          .doc(userId)
           .get()
           .then((docSnapShot) {
         exist = docSnapShot.exists;
@@ -86,10 +84,12 @@ class DataBase {
   }
 
   Future<String> lastCheckIn() async {
-    var docSnapShot =
-        await Firestore.instance.collection(collection).document(userId).get();
-    var response = docSnapShot.data;
-    if (response["in"].length == 0) {
+    var docSnapShot = await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(userId)
+        .get();
+    var response = docSnapShot.data();
+    if (response!["in"].length == 0) {
       return "";
     } else {
       return response["in"].last;
@@ -97,10 +97,12 @@ class DataBase {
   }
 
   Future<String> lastCheckOut() async {
-    var docSnapShot =
-        await Firestore.instance.collection(collection).document(userId).get();
-    var response = docSnapShot.data;
-    if (response["out"].length == 0) {
+    var docSnapShot = await FirebaseFirestore.instance
+        .collection(collection)
+        .doc(userId)
+        .get();
+    var response = docSnapShot.data();
+    if (response!["out"].length == 0) {
       return "";
     } else {
       return response["out"].last;

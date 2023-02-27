@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/src/provider.dart';
 import '../loading.dart';
 import 'signup.dart';
-import 'package:restart_app/restart_app.dart';
-import 'package:scanf/main.dart';
 
 class Login7 extends StatefulWidget {
   const Login7({Key? key}) : super(key: key);
@@ -110,7 +108,7 @@ class _Login7State extends State<Login7> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    LoadingPage()),
+                                                    const LoadingPage()),
                                           );
                                         }
                                       });
